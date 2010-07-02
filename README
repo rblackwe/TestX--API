@@ -1,0 +1,26 @@
+This project is a bit of a proof of concept.  The basic idea is to see if it is possible to reasonably move the t/* dir from a module and replace it with a call to TestX::API.
+
+There should be benefit from the separation of API tests and the implementation.  It is reasonable that two people may make separate modules that could pass the TestX::API tests.
+
+The basic migration steps would be ... using Config::INI as an example.
+
+1.  Make a TestX::APP::Config::INI t/ directory.
+2.  Copy all of the Config::INI t directory to the new t/ dir.
+3.  Install Config::INI (later this won't be needed but just do it for now.)
+4.  Try to do a prove on the moved t/ dir ??/TestX/APP/Config//INI/t/.
+5.  See what fails make changes to get them to pass and log what was needed to be done.
+6.  Loop 4 and 5 til all passes.
+7.  Replace t/* with t/testxapi.t  (is there a better name for testxapi.t?)  test_api will grab the latest versions tests.
+
+use lib '/home/rblackwe/github/TestX--API/lib';
+
+use TestX::API;
+
+my $api_test = TestX::API->new( module => "Config::INI" );
+$api_test->test_api();
+
+8.  Take a previous revisions tests and do the same thing.
+9.  Test with a specific version of tests.
+10.  Find other INI modules and do the same.
+11.  See if a super INI module is reasonable.
+
